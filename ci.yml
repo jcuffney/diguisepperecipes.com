@@ -1,0 +1,108 @@
+## #############################################################################
+## Continuous Integration for Static Site
+## #############################################################################
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: CI for Static Site
+
+## #############################################################################
+## Parameters
+## #############################################################################
+
+Parameters:
+  ArtifactBucketName:
+    Type: String
+    Description: name of the artifact bucket 
+    Default: com.diguisepperecipes.artifacts
+
+  GithubRepository:
+    Type: String
+    Description: the github repo url
+    Default: https://github.com/jwc2790/diguisepperecipes.com.git
+
+  CodeBuildProjectName:
+    Type: String
+    Description: codebuild project name
+    Default: diguiseppe-recipes
+
+## #############################################################################
+## Resources
+## #############################################################################
+
+Resources:
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: 
+        Ref: ArtifactBucketName
+
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: 
+        Fn::Sub: CodeBuildRole-${AWS::StackName}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "codebuild.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: /service-role/
+      Policies:
+        -
+          PolicyName: "CodeBuildAccessPolicies"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource:
+                  - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: 
+        Ref: CodeBuildProjectName
+      ServiceRole: 
+        Fn::GetAtt: CodeBuildServiceRole.Arn
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:10.1.0
+      Source:
+        Auth:
+          Type: OAUTH
+        Location: 
+          Ref: GithubRepository
+        Type: GITHUB
+      Triggers:
+        Webhook: true
+      TimeoutInMinutes: 10
+
+## #############################################################################
+## Outputs
+## #############################################################################
+
+# Outputs:
+
+#     RecipeServiceApiGatewayArn:
+#         Description: Recipe Lambda Function ARN
+#         Value: 
+#             Fn::Sub: >-
+#                 arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RecipeServiceLambda.Arn}/invocations
+#         Export:
+#             Name: RecipeServiceApiGatewayArn

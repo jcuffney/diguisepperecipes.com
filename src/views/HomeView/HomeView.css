@@ -1,0 +1,41 @@
+.home-view {
+  width: 100%;
+  background-image: './bg.jpg';
+}
+
+.home-view .card {
+  width: 300px;
+  display: block;
+  margin: auto;
+}
+
+.home-view img {
+  margin: auto;
+  display: block;
+  width: 300px;
+}
+
+.home-view h1,
+.home-view h4,
+.home-view h6 {
+  display: block;
+  text-align: center;
+}
+
+.home-view p {
+  max-width: 315px;
+  margin: 1rem auto;
+}
+
+.home-view p input {
+  width: 250px;
+}
+
+.home-view .list {
+  max-width: 500px;
+  margin: auto;
+}
+
+.home-view .list ul {
+  padding: 0;
+}

@@ -1,0 +1,162 @@
+## #############################################################################
+## Cloudfomation template
+##
+## Static Website
+##
+## - static webisite (s3, cloudfront)
+##
+## This will be a reusable stack for static sites.
+## #############################################################################
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: Static Site
+
+## #############################################################################
+## Parameters
+## #############################################################################
+
+Parameters:
+  DomainName:
+    Type: String
+    Description: s3 bucket name, and domain name, should also be hosted zone name
+    Default: diguisepperecipes.com
+
+  HostedZoneId:
+    Type: String
+    Description: the name (domain) of the hosted zone
+    Default: Z3BRW1H1BQIFDG
+
+  AcmCertificateArn:
+    Type: String
+    Description: the Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.
+    AllowedPattern: "arn:aws:acm:.*"
+    Default: arn:aws:acm:us-east-1:255964265911:certificate/78fc2d42-b996-4800-b1f9-e7a182b551e9
+
+## #############################################################################
+## Resources
+## #############################################################################
+
+Resources:
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: 
+        Ref: DomainName
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html
+  WwwBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName:
+        Fn::Sub: "www.${DomainName}"
+      WebsiteConfiguration:
+        RedirectAllRequestsTo:
+          HostName: 
+            Ref: DomainName
+          Protocol: https
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-distribution.html
+  CloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: 
+              Fn::GetAtt: SiteBucket.DomainName
+            Id: S3Origin
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Sub: "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        Enabled: true
+        HttpVersion: http2
+        DefaultRootObject: index.html
+        Aliases:
+          - Fn::Sub: "www.${DomainName}"
+          - Ref: DomainName
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        PriceClass: PriceClass_All
+        ViewerCertificate:
+          AcmCertificateArn: 
+            Ref: AcmCertificateArn
+          SslSupportMethod: sni-only
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html
+  DNSRecord:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: 
+        Ref: HostedZoneId
+      RecordSets:
+        - Name: 
+            Ref: DomainName
+          Type: A
+          AliasTarget:
+            HostedZoneId: 
+              Ref: HostedZoneId
+            DNSName:
+              Fn::GetAtt: CloudFront.DomainName
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html
+  WwwDNSRecord:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: 
+        Ref: HostedZoneId
+      RecordSets:
+        - Name: 
+            Fn::Sub: "www.${DomainName}"
+          Type: CNAME
+          TTL: "900"
+          ResourceRecords:
+            - Fn::GetAtt: WwwBucket.WebsiteURL
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-cloudfrontoriginaccessidentity.html
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 
+          Fn::Sub: "CloudFront OAI for ${DomainName}"
+
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-policy.html
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: 
+        Ref: SiteBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              CanonicalUser: 
+                Fn::GetAtt: CloudFrontOriginAccessIdentity.S3CanonicalUserId
+            Action: s3:GetObject
+            Resource: 
+              Fn::Sub:  "arn:aws:s3:::${SiteBucket}/*"
+
+## #############################################################################
+## Outputs
+## #############################################################################
+
+Outputs:
+
+    CloudFrontId:
+        Description: Recipe Lambda Function ARN
+        Value: 
+            Ref: CloudFront
+        Export:
+            Name: DiguiseppeRecipesCloudFrontId

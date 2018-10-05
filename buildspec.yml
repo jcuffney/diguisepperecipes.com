@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  variables:
+    ENV_BUCKET: com.diguisepperecipes.env
+    ENV_KEY: .env
+
+phases:
+
+  install:
+    commands:
+      - git config --global url."https://${GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/".insteadOf "ssh://git@github.com/"
+      - NODE_ENV=test npm install
+
+  # pre_build:
+  #   commands:
+  #     - |
+  #       echo Loading env vars from $ENV_BUCKET/$ENV_KEY
+
+  #       aws s3api get-object \
+  #         --bucket $ENV_BUCKET \
+  #         --key $ENV_KEY \
+  #         .env;
+
+  build:
+    commands:
+      - npm run build
+
+  # post_build:
+  #   commands:
+  #     - npm run verify
+
+artifacts:
+  files:
+    - "**/*"
