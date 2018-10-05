@@ -39,6 +39,7 @@ Resources:
       BucketName: 
         Ref: ArtifactBucketName
 
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -70,9 +71,11 @@ Resources:
                 Resource:
                   - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*
 
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-project.html
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
+      BadgeEnabled: true
       Name: 
         Ref: CodeBuildProjectName
       ServiceRole: 
