@@ -25,6 +25,7 @@ phases:
   build:
     commands:
       - npm run build
+      - cp ./template.yml build/template.yml
 
   # post_build:
   #   commands:
