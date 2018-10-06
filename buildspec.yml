@@ -33,7 +33,7 @@ phases:
       # - npm run verify
       - cp ./template.yml build/template.yml
       - aws s3 sync ./build s3://diguisepperecipes.com  --delete
-      - aws cloudfront create-invalidation --distribution-id "${CLOUDFRONT_DISTRIBUTON_ID}" --paths *
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTON_ID --paths *
 
 artifacts:
   files:
