@@ -6,7 +6,6 @@ env:
     ENV_KEY: .env
     CF_DISTRIBUTON_ID: E25EPOYAMI1LWO
 
-
 phases:
 
   install:
@@ -33,10 +32,11 @@ phases:
       # - npm run verify
       - cp ./template.yml build/template.yml
       - aws s3 sync ./build s3://diguisepperecipes.com  --delete
-      - aws cloudfront create-invalidation --distribution-id E25EPOYAMI1LWO --paths *
-      # - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTON_ID} --paths *
+      # FIXME: remove the hard coded distro id
+      # - aws cloudfront create-invalidation --distribution-id E25EPOYAMI1LWO --paths *
+      # QUESTION: why dosen't the followinig syntax work?
+      - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTON_ID} --paths /*
       
-
 artifacts:
   files:
     - "**/*"
