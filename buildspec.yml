@@ -26,6 +26,7 @@ phases:
     commands:
       - npm run build
       - cp ./template.yml build/template.yml
+      - aws s3 sync ./build s3://diguisepperecipes.com  --delete
                             
   # post_build:
   #   commands:
