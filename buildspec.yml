@@ -4,12 +4,14 @@ env:
   variables:
     ENV_BUCKET: com.diguisepperecipes.env
     ENV_KEY: .env
+    CLOUDFRONT_DISTRIBUTON_ID: E25EPOYAMI1LWO
+
 
 phases:
 
   install:
     commands:
-      - git config --global url."https://${GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/".insteadOf "ssh://git@github.com/"
+      # - git config --global url."https://${GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/".insteadOf "ssh://git@github.com/"
       - NODE_ENV=test npm install
 
   # pre_build:
@@ -27,7 +29,7 @@ phases:
       - npm run build
       - cp ./template.yml build/template.yml
       - aws s3 sync ./build s3://diguisepperecipes.com  --delete
-      - aws cloudfront create-invalidation --distribution-id E25EPOYAMI1LWO --paths *
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTON_ID --paths *
                             
   # post_build:
   #   commands:
