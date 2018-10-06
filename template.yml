@@ -75,8 +75,8 @@ Resources:
         HttpVersion: http2
         DefaultRootObject: index.html
         Aliases:
-          - Fn::Sub: "www.${DomainName}"
           - Ref: DomainName
+          - Fn::Sub: "www.${DomainName}"
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -108,7 +108,7 @@ Resources:
             HostedZoneId: 
               Ref: HostedZoneId
             DNSName:
-              Ref: CloudFront
+              Fn::GetAtt: CloudFront.DomainName
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html
   WwwDNSRecord:
