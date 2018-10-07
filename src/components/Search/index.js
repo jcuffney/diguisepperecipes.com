@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'lodash.debounce'
+import Select from 'react-select'
 
 import './Search.css'
 
 class Search extends Component {
   static propTypes = {
-    onSearch: PropTypes.func
+    onSearch: PropTypes.func,
+    options: PropTypes.arrayOf(PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    })).isRequired,
   }
 
   static defaultProps = {
@@ -30,10 +35,13 @@ class Search extends Component {
 
   render () {
     const { query } = this.state
+    const { options } = this.props
     return (
-      <input type="text" onChange={this.handleChange} value={query} />
+      <Select options={options} />
+
     )
   }
 }
+      // <input type="text" onChange={this.handleChange} value={query} />
 
 export default Search

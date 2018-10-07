@@ -36,10 +36,16 @@ export class HomeView extends Component {
   render () {
     const { recipes } = this.props
     if (!recipes) return null
+    const options = [
+      { value: 'chocolate', label: 'Chocolate' },
+      { value: 'strawberry', label: 'Strawberry' },
+      { value: 'vanilla', label: 'Vanilla' }
+    ];
+
     return (
       <div className="home-view">
         <div>
-          <p>Search: <Search onSearch={this.handleSearch} /></p>
+          <p>Search: <Search onSearch={this.handleSearch} options={ options } /></p>
         </div>
       </div>
     )
