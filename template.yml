@@ -95,20 +95,20 @@ Resources:
           SslSupportMethod: sni-only
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html
-  DNSRecord:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: 
-        Ref: HostedZoneId
-      RecordSets:
-        - Name: 
-            Ref: DomainName
-          Type: A
-          AliasTarget:
-            HostedZoneId: 
-              Ref: HostedZoneId
-            DNSName:
-              Fn::GetAtt: CloudFront.DomainName
+  # DNSRecord:
+  #   Type: AWS::Route53::RecordSetGroup
+  #   Properties:
+  #     HostedZoneId: 
+  #       Ref: HostedZoneId
+  #     RecordSets:
+  #       - Name: 
+  #           Ref: DomainName
+  #         Type: A
+  #         AliasTarget:
+  #           HostedZoneId: 
+  #             Ref: HostedZoneId
+  #           DNSName:
+  #             Fn::GetAtt: CloudFront.DomainName
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordsetgroup.html
   WwwDNSRecord:
