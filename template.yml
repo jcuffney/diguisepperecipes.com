@@ -74,6 +74,11 @@ Resources:
         Enabled: true
         HttpVersion: http2
         DefaultRootObject: index.html
+        CustomErrorResponse: 
+          ErrorCachingMinTTL: 0
+          ErrorCode: 404
+          ResponseCode: 200
+          ResponsePagePath: /index.html
         Aliases:
           - Ref: DomainName
           - Fn::Sub: "www.${DomainName}"
