@@ -74,7 +74,7 @@ Resources:
         Enabled: true
         HttpVersion: http2
         DefaultRootObject: index.html
-        CustomErrorResponse: 
+        CustomErrorResponses: 
           - ErrorCachingMinTTL: 0
             ErrorCode: 404
             ResponseCode: 200
