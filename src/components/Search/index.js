@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import debounce from 'lodash.debounce'
-import Select from 'react-select'
+import { debounce } from 'lodash'
+import Async from 'react-select/lib/Async';
 
 import './Search.css'
 
 class Search extends Component {
   static propTypes = {
-    onSearch: PropTypes.func,
+    search: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     })).isRequired,
   }
 
@@ -18,30 +18,61 @@ class Search extends Component {
     onSearch: () => {}
   }
 
-  constructor (props) {
+  constructor(props){
     super(props)
-    this.debounce = debounce(props.onSearch, 500, { leading: false })
+    this.handleLoadOptions = this.handleLoadOptions.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFilterOption = this.handleFilterOption.bind(this);
   }
 
   state = {
-    query: ''
+    inputValue: '',
   }
 
-  handleChange = event => {
-    const val = event.target.value
-    this.setState({ query: val })
-    this.debounce(event.target.val)
+  loadingMessage({ inputValue }) {
+    return `Searching the cookbook for ${inputValue}...`
+  }
+
+  placeholder() {
+    return 'Search for a recipe...'
+  }
+
+  handleChange(value) {
+    console.log(`${value} selected`)
+  }
+
+  handleFilterOption(options) {
+    // console.log('filter optoin', options)
+  }
+
+  handleInputChange(newValue) {
+    const inputValue = newValue.replace(/\W/g, '');
+    this.setState({ inputValue })
+    return inputValue;
+  }
+
+  async handleLoadOptions(query, cb) {
+    const results = await this.props.search(query)
+    cb(results)
   }
 
   render () {
-    const { query } = this.state
-    const { options } = this.props
     return (
-      <Select options={options} />
-
+      <Async 
+        autoFocus={ true }
+        placeholder={ this.placeholder() }
+        loadingMessage={ this.loadingMessage } 
+        maxMenuHeight={ 300 }
+        isSearchable={ true }
+        onChange={ this.handleChange }
+        onInputChange={ this.handleInputChange }
+        loadOptions={ debounce(this.handleLoadOptions, 750) } 
+        getOptionLabel={ option => option.title }
+        getOptionValue={ option => option.title.toLowerCase() }
+        defaultOptions={ this.props.options }
+      />
     )
   }
 }
-      // <input type="text" onChange={this.handleChange} value={query} />
 
 export default Search

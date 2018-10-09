@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getRecipes } from 'actions/recipe'
+import { getRecipes, searchRecipes } from 'actions/recipe'
 import Search from 'components/Search'
-import RecipeCard from 'components/RecipeCard'
 
 import './HomeView.css'
 
@@ -22,30 +21,17 @@ export class HomeView extends Component {
     this.props.getRecipes()
   }
 
-  handleSearch (query) {
-    console.log('handling search', query)
-  }
-
-  renderRecipes (recipes) {
-    if (!recipes) return null
-    return recipes.map((recipe, idx) => {
-      return <RecipeCard { ...recipe } key={`home-${idx}`} />
-    })
-  }
-
   render () {
-    const { recipes } = this.props
+    const { recipes, searchRecipes } = this.props
     if (!recipes) return null
-    const options = [
-      { value: 'chocolate', label: 'Chocolate' },
-      { value: 'strawberry', label: 'Strawberry' },
-      { value: 'vanilla', label: 'Vanilla' }
-    ];
-
     return (
       <div className="home-view">
-        <div>
-          <p>Search: <Search onSearch={this.handleSearch} options={ options } /></p>
+        <div className="search-wrapper">
+          <h1 className="title">DiGuiseppe Recipes</h1>
+          <Search 
+            search={ searchRecipes } 
+            options={ recipes } 
+          />
         </div>
       </div>
     )
@@ -53,7 +39,7 @@ export class HomeView extends Component {
 }
 
 const mapStateToProps = state => ({
-  recipes: state.recipe
+  recipes: Object.values(state.recipe)
 })
 
-export default connect(mapStateToProps, { getRecipes })(HomeView)
+export default connect(mapStateToProps, { getRecipes, searchRecipes })(HomeView)

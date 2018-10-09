@@ -11,12 +11,33 @@ export const getRecipes = () => async dispatch => {
   }
 
   const recipes = await search(query)
-    .then(recipe => ([ recipe ]))
-    
+    .then(response => { 
+      let res = {}
+      response.forEach(recipe => {
+        res[recipe.id] = recipe;
+      });
+      return res;
+    })
+  
   dispatch({
     type: RECIPES_UPDATED,
     payload: recipes
   })
+}
+
+export const searchRecipes = searchTerm => async dispatch => {
+
+  const query = {
+    query: {
+      match: {
+        title: searchTerm
+      }
+    }
+  }
+
+  const recipes = await search(query)
+
+  return recipes;
 }
 
 export const getRecipe = id => async dispatch => {
@@ -27,8 +48,8 @@ export const getRecipe = id => async dispatch => {
   }
 
   const recipes = await search(query)
-    .then(recipe => ([ recipe ]))
-    
+
+
   dispatch({
     type: RECIPES_UPDATED,
     payload: recipes
@@ -41,7 +62,11 @@ export const clearRecipies = () => {
   }
 }
 
-// helper
+
+// -----------------------------------------------------------------------------
+// helpers
+// -----------------------------------------------------------------------------
+
 const search = async query => {
   const queryStr = JSON.stringify(query);
   return await fetch(`${BASE_URL}/search`, {
@@ -49,4 +74,5 @@ const search = async query => {
     body: queryStr
   })
   .then(response => response.json())
+
 };

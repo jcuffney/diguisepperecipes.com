@@ -1,11 +1,11 @@
 import { RECIPES_UPDATED, RECIPIES_CLEARED } from './types'
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case RECIPES_UPDATED:
-      return [
+      return {
         ...action.payload
-      ]
+      }
     case RECIPIES_CLEARED:
       return []
     default:
