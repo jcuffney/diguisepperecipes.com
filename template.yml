@@ -65,8 +65,8 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName:
-              Fn::GetAtt: SiteBucket.WebsiteURL
+          - DomainName: 
+              Fn::GetAtt: SiteBucket.DomainName
             Id: S3Origin
             S3OriginConfig:
               OriginAccessIdentity:
