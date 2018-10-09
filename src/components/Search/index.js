@@ -8,7 +8,7 @@ import './Search.css'
 class Search extends Component {
   static propTypes = {
     search: PropTypes.func,
-    history: PropTypes.func,
+    history: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
@@ -42,12 +42,12 @@ class Search extends Component {
 
   handleChange(value) {
     const { id } = value;
-    console.log(`${id} selected`)
     this.props.history.push(`/recipe/${id}`)
   }
 
-  handleFilterOption(options) {
-    // console.log('filter optoin', options)
+  handleFilterOption({ value }) {
+    console.log((value.indexOf(this.state.inputValue) !== -1))
+    return value.indexOf(this.state.inputValue) !== -1;
   }
 
   handleInputChange(newValue) {
@@ -70,6 +70,7 @@ class Search extends Component {
         maxMenuHeight={ 300 }
         isSearchable={ true }
         onChange={ this.handleChange }
+        filterOption={ this.handleFilterOption }
         onInputChange={ this.handleInputChange }
         loadOptions={ debounce(this.handleLoadOptions, 750) } 
         getOptionLabel={ option => option.title }
