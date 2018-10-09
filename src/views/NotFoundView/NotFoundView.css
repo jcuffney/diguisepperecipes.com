@@ -1,0 +1,33 @@
+.not-found-view {
+  width: 100%;
+  min-height: 100vh;
+  background: url("/img/bg.jpg") center center #fff / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.not-found-view .not-found-wrapper {
+  width: 80%;
+  display: block;
+  margin: auto;
+}
+
+.not-found-view .not-found-wrapper .title {
+  color: #fff;
+  text-align: center;
+}
+
+.not-found-view .not-found-wrapper .link-home {
+  /* margin: auto; */
+  display: block;
+  text-align: center;
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+  .not-found-view .search-wrapper {
+    width: 500px;
+  }
+} 

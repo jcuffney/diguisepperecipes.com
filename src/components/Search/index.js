@@ -8,6 +8,7 @@ import './Search.css'
 class Search extends Component {
   static propTypes = {
     search: PropTypes.func,
+    history: PropTypes.func,
     options: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
@@ -15,7 +16,8 @@ class Search extends Component {
   }
 
   static defaultProps = {
-    onSearch: () => {}
+    onSearch: () => {},
+    history: () => {}
   }
 
   constructor(props){
@@ -23,6 +25,7 @@ class Search extends Component {
     this.handleLoadOptions = this.handleLoadOptions.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFilterOption = this.handleFilterOption.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   state = {
@@ -38,7 +41,9 @@ class Search extends Component {
   }
 
   handleChange(value) {
-    console.log(`${value} selected`)
+    const { id } = value;
+    console.log(`${id} selected`)
+    this.props.history.push(`/recipe/${id}`)
   }
 
   handleFilterOption(options) {

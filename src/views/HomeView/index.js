@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getRecipes, searchRecipes } from 'actions/recipe'
 import Search from 'components/Search'
@@ -29,6 +30,7 @@ export class HomeView extends Component {
         <div className="search-wrapper">
           <h1 className="title">DiGuiseppe Recipes</h1>
           <Search 
+            history={ this.props.history }
             search={ searchRecipes } 
             options={ recipes } 
           />
@@ -42,4 +44,4 @@ const mapStateToProps = state => ({
   recipes: Object.values(state.recipe)
 })
 
-export default connect(mapStateToProps, { getRecipes, searchRecipes })(HomeView)
+export default withRouter(connect(mapStateToProps, { getRecipes, searchRecipes })(HomeView))
