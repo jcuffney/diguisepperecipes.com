@@ -1,7 +1,11 @@
 .not-found-view {
   width: 100%;
   min-height: 100vh;
-  background: url("/img/bg.jpg") center center #fff / cover no-repeat;
+  background-image: url("/img/bg.jpg");
+  background-color: #000;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;  
   display: flex;
   justify-content: center;
   align-items: center;
