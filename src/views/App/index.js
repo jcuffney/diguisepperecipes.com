@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import HomeView from 'views/HomeView'
 import RecipeView from 'views/RecipeView'
 import NotFoundView from 'views/NotFoundView'
+
+import 'semantic-ui-css/semantic.min.css';
 import './App.css'
 
 export default () => (

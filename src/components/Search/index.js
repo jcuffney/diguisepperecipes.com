@@ -32,22 +32,14 @@ class Search extends Component {
     inputValue: '',
   }
 
-  loadingMessage({ inputValue }) {
-    return `Searching the cookbook for ${inputValue}...`
-  }
-
-  placeholder() {
-    return 'Search for a recipe...'
-  }
-
   handleChange(value) {
     const { id } = value;
-    this.props.history.push(`/recipe/${id}`)
+    if(id) this.props.history.push(`/recipe/${id}`)
   }
 
-  handleFilterOption({ value }) {
-    console.log((value.indexOf(this.state.inputValue) !== -1))
-    return value.indexOf(this.state.inputValue) !== -1;
+  handleFilterOption(candidate, input) {
+    console.log(candidate, input)
+    return true;
   }
 
   handleInputChange(newValue) {
@@ -58,6 +50,7 @@ class Search extends Component {
 
   async handleLoadOptions(query, cb) {
     const results = await this.props.search(query)
+    
     cb(results)
   }
 
@@ -65,12 +58,14 @@ class Search extends Component {
     return (
       <Async 
         autoFocus={ true }
-        placeholder={ this.placeholder() }
-        loadingMessage={ this.loadingMessage } 
+        placeholder={ 'Search for a recipe...' }
+        loadingMessage={ ({ inputValue }) => `Searching for ${ inputValue }` }
         maxMenuHeight={ 300 }
         isSearchable={ true }
+        cacheOptions={ true }
+        ignoreCase={ true }
+        ignoreAccents={ true }
         onChange={ this.handleChange }
-        filterOption={ this.handleFilterOption }
         onInputChange={ this.handleInputChange }
         loadOptions={ debounce(this.handleLoadOptions, 750) } 
         getOptionLabel={ option => option.title }

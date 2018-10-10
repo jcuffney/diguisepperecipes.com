@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getRecipes, searchRecipes } from 'actions/recipe'
+import { Header } from 'semantic-ui-react'
 import Search from 'components/Search'
 
 import './HomeView.css'
@@ -28,7 +29,7 @@ export class HomeView extends Component {
     return (
       <div className="home-view">
         <div className="search-wrapper">
-          <h1 className="title">DiGuiseppe Recipes</h1>
+          <Header as='h1' className="title">DiGuiseppe Recipes</Header>
           <Search 
             history={ this.props.history }
             search={ searchRecipes } 
