@@ -14,6 +14,7 @@ export default () => (
   <Provider store={store}>
     <Router>
       <Route render={({location}) => (
+          <div className='app-view'>
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={1000}>
 
@@ -25,6 +26,7 @@ export default () => (
 
             </CSSTransition>
           </TransitionGroup>
+          </div>
         )}
       />
     </Router>

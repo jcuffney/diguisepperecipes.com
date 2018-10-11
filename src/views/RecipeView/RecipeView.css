@@ -36,3 +36,16 @@
   margin: auto;
   margin-bottom: 1rem;
 }
+
+/* post design */
+
+.recipe-view {
+  width: 80%;
+  display: block;
+  margin: auto;
+}
+
+div.recipe-view .white{
+  color: #fff;
+  text-align: center;
+}

@@ -1,29 +1,16 @@
 .home-view {
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("/img/bg.jpg");
-  background-color: #000;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.home-view .search-wrapper {
   width: 80%;
   display: block;
   margin: auto;
 }
 
-.home-view .search-wrapper .title {
+.home-view h1.title {
   color: #fff;
   text-align: center;
 }
 
 @media (min-width: 600px) {
-  .home-view .search-wrapper {
+  .home-view {
     width: 500px;
   }
 } 

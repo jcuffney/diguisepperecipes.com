@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Header } from 'semantic-ui-react'
 import { getRecipe } from 'actions/recipe'
 
 import './RecipeView.css'
@@ -22,7 +23,7 @@ export class RecipeView extends Component {
   componentDidMount () {
     const { id, recipe } = this.props
     this.props.getRecipe(id)
-    if (recipe) {
+    if (recipe && recipe.title) {
       const { title } = recipe;
       document.title = `${ title } - Diguiseppe Recipes`
     } 
@@ -110,8 +111,8 @@ export class RecipeView extends Component {
 
     return (
       <div className="recipe-view">
-        <h1>{ title }</h1>
-        <h3>{ author }</h3>
+        <Header as='h1' className='white'>{ title }</Header>
+        <Header as='h3' className='white'>{ author }</Header>
         { duration && <h3>{ `${duration.time} ${duration.unit}` }</h3> }
         <Link to="/">Back</Link>
         <br />
