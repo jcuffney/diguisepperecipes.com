@@ -6,6 +6,8 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  min-height: 100vh;
+  min-width: 100vw;
   /* display: flex;
   justify-content: center;
   align-items: center; */

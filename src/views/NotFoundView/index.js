@@ -6,9 +6,7 @@ import './NotFoundView.css'
 
 export default (props) => (
   <div className="not-found-view">
-    <div className="not-found-wrapper">
-      <Header as='h1' className="title">404</Header>
-      <Link to="/" className="link-home">Home</Link>
-    </div>
+    <Header as='h1' className="title">404</Header>
+    <Link to="/" className="link-home">Home</Link>
   </div>
 )

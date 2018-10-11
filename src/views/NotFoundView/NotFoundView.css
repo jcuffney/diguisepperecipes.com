@@ -1,28 +1,17 @@
 .not-found-view {
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("/img/bg.jpg");
-  background-color: #000;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;  
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  height: 100%;
 }
 
-.not-found-view .not-found-wrapper {
-  width: 80%;
-  display: block;
-  margin: auto;
-}
-
-.not-found-view .not-found-wrapper .title {
+.not-found-view h1.title {
   color: #fff;
   text-align: center;
 }
 
-.not-found-view .not-found-wrapper .link-home {
+.not-found-view .link-home {
   /* margin: auto; */
   display: block;
   text-align: center;
