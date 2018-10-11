@@ -20,8 +20,10 @@ export class RecipeView extends Component {
   }
 
   componentDidMount () {
-    const { id } = this.props
+    const { id, recipe } = this.props
     this.props.getRecipe(id)
+    const { title } = recipe;
+    document.title = `${ title } - Diguiseppe Recipes`
   }
 
   renderImage (imageUrl, title) {
