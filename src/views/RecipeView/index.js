@@ -110,7 +110,7 @@ export class RecipeView extends Component {
     } = recipe
 
     return (
-      <div className="recipe-view">
+      <div className="recipe-view transition-wrapper">
         <Header as='h1' className='white'>{ title }</Header>
         <Header as='h3' className='white'>{ author }</Header>
         { duration && <h3>{ `${duration.time} ${duration.unit}` }</h3> }

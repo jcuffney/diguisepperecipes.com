@@ -27,13 +27,15 @@ export class HomeView extends Component {
     const { recipes, searchRecipes } = this.props
     if (!recipes) return null
     return (
-      <div className="home-view">
-        <Header as='h1' className="title">DiGuiseppe Recipes</Header>
-        <Search 
-          history={ this.props.history }
-          search={ searchRecipes } 
-          options={ recipes } 
-        />
+      <div className="home-view transition-wrapper">
+        <div>
+          <Header as='h1' className="title">DiGuiseppe Recipes</Header>
+          <Search 
+            history={ this.props.history }
+            search={ searchRecipes } 
+            options={ recipes } 
+          />
+        </div>
       </div>
     )
   }

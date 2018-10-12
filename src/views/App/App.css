@@ -6,11 +6,17 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+}
+
+.transition-wrapper {
+  width: 100%;
   min-height: 100vh;
-  min-width: 100vw;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 .fade-appear,

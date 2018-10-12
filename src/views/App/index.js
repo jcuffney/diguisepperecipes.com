@@ -15,17 +15,17 @@ export default () => (
     <Router>
       <Route render={({location}) => (
           <div className='app-view'>
-          <TransitionGroup>
-            <CSSTransition key={location.key} classNames="fade" timeout={1000}>
+            <TransitionGroup className='transition-wrapper'>
+              <CSSTransition key={location.key} classNames="fade" timeout={1000}>
 
-              <Switch key={location.key} location={location}>
-                <Route exact path="/" component={HomeView} />
-                <Route exact path="/recipe/:id" component={RecipeView} />
-                <Route path="*" component={NotFoundView} />
-              </Switch>
+                <Switch key={location.key} location={location}>
+                  <Route exact path="/" component={HomeView} />
+                  <Route exact path="/recipe/:id" component={RecipeView} />
+                  <Route path="*" component={NotFoundView} />
+                </Switch>
 
-            </CSSTransition>
-          </TransitionGroup>
+              </CSSTransition>
+            </TransitionGroup>
           </div>
         )}
       />
