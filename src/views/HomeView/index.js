@@ -21,6 +21,7 @@ export class HomeView extends Component {
 
   componentDidMount () {
     this.props.getRecipes()
+    document.title('DiGuiseppe Recipes')
   }
 
   render () {
