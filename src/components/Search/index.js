@@ -58,6 +58,7 @@ class Search extends Component {
     return (
       <Async 
         autoFocus={ true }
+        className='search'
         placeholder={ 'Search for a recipe...' }
         loadingMessage={ ({ inputValue }) => `Searching for ${ inputValue }` }
         maxMenuHeight={ 300 }

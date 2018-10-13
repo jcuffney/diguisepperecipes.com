@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Header } from 'semantic-ui-react'
+import { Header, Image, Container, Icon, Grid, Segment, Divider } from 'semantic-ui-react'
 import { getRecipe } from 'actions/recipe'
+import Ingredients from 'components/Ingredients'
+import Steps from 'components/Steps'
 
 import './RecipeView.css'
 
@@ -29,100 +31,42 @@ export class RecipeView extends Component {
     } 
   }
 
-  renderImage (imageUrl, title) {
-    if (!imageUrl) return null
-    return <div><img src={ imageUrl } alt={ title } /></div>
-  }
-
-  renderSteps (list) {
-    if (!list) return null
-    return (
-      <div>
-        <h5>Steps:</h5>
-        <div className="list">
-          <ul>
-            { list.map((item, idx) => (<li key={`step-${idx}`}>{ item }</li>)) }
-          </ul>
-        </div>
-      </div>
-    )
-  }
-
-  renderTags (list) {
-    if (!list) return null
-    return (
-      <div>
-        <h5>Tags:</h5>
-        <div className="list">
-          <ul>
-            { list.map((item, idx) => (<li key={`step-${idx}`}>{ item }</li>)) }
-          </ul>
-        </div>
-      </div>
-    )
-  }
-
-  renderCategories (list) {
-    if (!list) return null
-    return (
-      <div>
-        <h5>Categories:</h5>
-        <div className="list">
-          <ul>
-            { list.map((item, idx) => (<li key={`step-${idx}`}>{ item }</li>)) }
-          </ul>
-        </div>
-      </div>
-    )
-  }
-
-  renderIngredients (list) {
-    if (!list) return null
-    return (
-      <div>
-        <h5>Ingredients:</h5>
-        <div className="list split">
-          <ul>
-            { list.map((item, idx) => {
-              const { amount = '', unit = '', ingredient = '', optional } = item
-              return (
-                <li key={`ingr-${idx}`}>{ `${amount} ${unit} ${ingredient} ${optional ? ' * (optional)' : ''}` }</li>
-              )
-            })}
-          </ul>
-        </div>
-      </div>
-    )
-  }
-
   render () {
     const { recipe } = this.props
     if (!recipe) return null
     const {
       title,
-      steps,
       author,
-      ingredients,
       imageUrl,
-      duration,
-      tags,
-      category
+      ingredients,
+      steps,
+      description,
     } = recipe
 
     return (
       <div className="recipe-view transition-wrapper">
-        <Header as='h1' className='white'>{ title }</Header>
-        <Header as='h3' className='white'>{ author }</Header>
-        { duration && <h3>{ `${duration.time} ${duration.unit}` }</h3> }
-        <Link to="/">Back</Link>
-        <br />
-        { this.renderImage(imageUrl) }
-        <br />
-        { this.renderIngredients(ingredients) }
-        { this.renderSteps(steps) }
-        <hr />
-        { this.renderTags(tags) }
-        { this.renderCategories(category) }
+        <Container>
+          <Grid stackable columns={2}>
+            <Grid.Column>
+              <Segment>
+                <Header as='h1' className='white'>
+                <Link to="/">
+                  <Icon name='arrow left' size='big' />
+                </Link>{ title }</Header>
+                <Header as='h3' className='white'>{ author }</Header>
+                <Divider />
+                <p>{ description }</p>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment>
+                <Image src={ imageUrl } />
+              </Segment>
+            </Grid.Column>
+          </Grid>
+          <Ingredients ingredients={ingredients} />
+          <Steps steps={ steps } />
+        </Container>
       </div>
     )
   }
