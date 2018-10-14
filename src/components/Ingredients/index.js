@@ -18,7 +18,7 @@ class Ingredients extends Component {
     const SIDE = left ? 0 : 1;
     return ingredients.map((str, idx) => {
       if (idx % 2 === SIDE) return null;
-      return <Checkbox label={ str } />
+      return <Checkbox label={ str } key={ `ingr-${ idx }` } />
     })
   }
 

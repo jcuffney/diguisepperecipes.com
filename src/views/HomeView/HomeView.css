@@ -23,3 +23,13 @@
     width: 500px;
   }
 } 
+
+.credits {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.heart {
+  color: red;
+}

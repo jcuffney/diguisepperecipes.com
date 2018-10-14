@@ -37,6 +37,7 @@ export class HomeView extends Component {
             options={ recipes } 
           />
         </div>
+        <p className='credits'>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
       </div>
     )
   }

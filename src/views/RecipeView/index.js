@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Header, Image, Container, Icon, Grid, Segment, Divider } from 'semantic-ui-react'
+import { Header, Container, Icon, Divider } from 'semantic-ui-react'
 import { getRecipe } from 'actions/recipe'
 import Ingredients from 'components/Ingredients'
 import Steps from 'components/Steps'
+import Tags from 'components/Tags'
 
 import './RecipeView.css'
 
@@ -37,35 +38,35 @@ export class RecipeView extends Component {
     const {
       title,
       author,
-      imageUrl,
       ingredients,
       steps,
       description,
+      category,
+      duration,
+      tags,
     } = recipe
+
+    const ts = tags && category ? [ ...tags, ...category ] : []
 
     return (
       <div className="recipe-view transition-wrapper">
         <Container>
-          <Grid stackable columns={2}>
-            <Grid.Column>
-              <Segment>
-                <Header as='h1' className='white'>
-                <Link to="/">
-                  <Icon name='arrow left' size='big' />
-                </Link>{ title }</Header>
-                <Header as='h3' className='white'>{ author }</Header>
-                <Divider />
-                <p>{ description }</p>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column>
-              <Segment>
-                <Image src={ imageUrl } />
-              </Segment>
-            </Grid.Column>
-          </Grid>
+          <Header as='h1' className='white'>
+          <Link to="/">
+            <Icon name='arrow left' />
+          </Link>{ title }</Header>
+          <Header as='h5' className='white'>By: { author }</Header>
+          {duration && (
+            <p>
+              Cook Time: { duration.time } { duration.unit }
+            </p>
+          )}
+          <Tags tags={ ts } />
+          <p>{ description }</p>
+          <Divider />
           <Ingredients ingredients={ingredients} />
           <Steps steps={ steps } />
+          <p className='center'>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
         </Container>
       </div>
     )

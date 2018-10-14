@@ -16,7 +16,7 @@ class Steps extends Component {
   renderStep() {
     const { steps } = this.props;
     return steps.map((str, idx) => {
-      return <Checkbox label={ str } />
+      return <Checkbox label={ str } key={ `step-${ idx }` } />
     })
   }
 

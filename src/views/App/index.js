@@ -15,6 +15,7 @@ export default () => (
     <Router>
       <Route render={({location}) => (
           <div className='app-view'>
+            <div className='blur' />
             <TransitionGroup className='transition-wrapper'>
               <CSSTransition key={location.key} classNames="fade" timeout={1000}>
 
