@@ -52,9 +52,11 @@ export class RecipeView extends Component {
       <div className="recipe-view transition-wrapper">
         <Container>
           <Header as='h1' className='white'>
-          <Link to="/">
-            <Icon name='arrow left' />
-          </Link>{ title }</Header>
+            <Link to="/">
+              <Icon name='arrow left' />
+            </Link>
+            { title }
+          </Header>
           <Header as='h5' className='white'>By: { author }</Header>
           {duration && (
             <p>

@@ -11,7 +11,8 @@ export const getRecipes = () => async dispatch => {
   }
 
   const recipes = await search(query)
-    .then(response => { 
+    .then(response => response.hits.hits.map(item => item._source))
+    .then(response => {
       let res = {}
       response.forEach(recipe => {
         res[recipe.id] = recipe;
@@ -28,14 +29,19 @@ export const getRecipes = () => async dispatch => {
 export const searchRecipes = searchTerm => async dispatch => {
 
   const query = {
-    query: {
-      match: {
-        title: searchTerm
+    suggest: {
+      recipe: {
+        prefix: searchTerm,
+        completion: {
+          field: "suggest"
+        }
       }
     }
   }
 
   const recipes = await search(query)
+    .then(response => response.suggest.recipe[0].options.map(item => item._source))
+
 
   return recipes;
 }
@@ -48,6 +54,14 @@ export const getRecipe = id => async dispatch => {
   }
 
   const recipes = await search(query)
+    .then(response => response.hits.hits.map(item => item._source))
+    .then(response => {
+      let res = {}
+      response.forEach(recipe => {
+        res[recipe.id] = recipe;
+      });
+      return res;
+    })
 
 
   dispatch({

@@ -50,7 +50,7 @@ class Search extends Component {
 
   async handleLoadOptions(query, cb) {
     const results = await this.props.search(query)
-    
+    console.log(results);
     cb(results)
   }
 
