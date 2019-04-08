@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Label } from 'semantic-ui-react'
 
-import './Tags.css'
-
 class Tags extends Component {
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.string),

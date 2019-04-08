@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Header, Grid, Segment, Checkbox, Divider } from 'semantic-ui-react'
 
-import './Steps.css'
-
 class Steps extends Component {
   static propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string),

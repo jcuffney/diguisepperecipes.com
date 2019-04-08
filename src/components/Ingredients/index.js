@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Header, Grid, Segment, Checkbox, Divider } from 'semantic-ui-react'
 
-import './Ingredients.css'
-
 class Ingredients extends Component {
   static propTypes = {
     ingredients: PropTypes.arrayOf(PropTypes.string),

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import { debounce } from 'lodash'
 import Async from 'react-select/lib/Async';
 
-import './Search.css'
-
 class Search extends Component {
   static propTypes = {
     search: PropTypes.func,
