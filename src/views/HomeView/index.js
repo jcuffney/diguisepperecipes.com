@@ -6,7 +6,8 @@ import { getRecipes, searchRecipes } from 'actions/recipe'
 import { Header } from 'semantic-ui-react'
 import Search from 'components/Search'
 
-import './HomeView.css'
+// import './HomeView.css'
+import styles from './index.module.sass';
 
 export class HomeView extends Component {
   static propTypes = {
@@ -28,16 +29,16 @@ export class HomeView extends Component {
     const { recipes, searchRecipes } = this.props
     if (!recipes) return null
     return (
-      <div className="home-view transition-wrapper">
+      <div className={ styles.homeView }>
         <div>
-          <Header as='h1' className="title">DiGuiseppe Recipes</Header>
+          <Header as='h1' className={ styles.title }>DiGuiseppe Recipes</Header>
           <Search 
             history={ this.props.history }
             search={ searchRecipes } 
             options={ recipes } 
           />
         </div>
-        <p className='credits'>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
+        <p className={ styles.credits }>Made with <span className={ styles.heart }>&hearts;</span> by Joe Cuffney</p>
       </div>
     )
   }
