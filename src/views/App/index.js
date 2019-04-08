@@ -7,7 +7,7 @@ import HomeView from 'views/HomeView'
 import RecipeView from 'views/RecipeView'
 import NotFoundView from 'views/NotFoundView'
 
-import 'semantic/dist/semantic.min.css';
+// import 'semantic/dist/semantic.min.css';
 import './App.css'
 
 export default () => (
