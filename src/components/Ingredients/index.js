@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Header, Grid, Segment, Checkbox, Divider } from 'semantic-ui-react'
 
@@ -25,7 +25,7 @@ class Ingredients extends Component {
   render () {
     if (!this.props.ingredients.length) return null;
     return (
-      <Fragment>
+      <>
         <Header>Ingredients:</Header>
         <Divider />
         <Grid stackable columns={2}>
@@ -40,7 +40,7 @@ class Ingredients extends Component {
             </Segment>
           </Grid.Column>
         </Grid>
-      </Fragment>  
+      </>  
     )
   }
 }
