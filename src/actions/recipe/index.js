@@ -3,7 +3,6 @@ import { RECIPES_UPDATED, RECIPIES_CLEARED } from './types'
 const BASE_URL = 'https://api.diguisepperecipes.com/v1'
 
 export const getRecipes = () => async dispatch => {
-
   const query = {
     query: {
       match_all: {}
@@ -15,11 +14,11 @@ export const getRecipes = () => async dispatch => {
     .then(response => {
       let res = {}
       response.forEach(recipe => {
-        res[recipe.id] = recipe;
-      });
-      return res;
+        res[recipe.id] = recipe
+      })
+      return res
     })
-  
+
   dispatch({
     type: RECIPES_UPDATED,
     payload: recipes
@@ -27,13 +26,12 @@ export const getRecipes = () => async dispatch => {
 }
 
 export const searchRecipes = searchTerm => async dispatch => {
-
   const query = {
     suggest: {
       recipe: {
         prefix: searchTerm,
         completion: {
-          field: "suggest"
+          field: 'suggest'
         }
       }
     }
@@ -42,8 +40,7 @@ export const searchRecipes = searchTerm => async dispatch => {
   const recipes = await search(query)
     .then(response => response.suggest.recipe[0].options.map(item => item._source))
 
-
-  return recipes;
+  return recipes
 }
 
 export const getRecipe = id => async dispatch => {
@@ -58,11 +55,10 @@ export const getRecipe = id => async dispatch => {
     .then(response => {
       let res = {}
       response.forEach(recipe => {
-        res[recipe.id] = recipe;
-      });
-      return res;
+        res[recipe.id] = recipe
+      })
+      return res
     })
-
 
   dispatch({
     type: RECIPES_UPDATED,
@@ -76,17 +72,15 @@ export const clearRecipies = () => {
   }
 }
 
-
 // -----------------------------------------------------------------------------
 // helpers
 // -----------------------------------------------------------------------------
 
 const search = async query => {
-  const queryStr = JSON.stringify(query);
-  return await fetch(`${BASE_URL}/search`, {
+  const queryStr = JSON.stringify(query)
+  return fetch(`${BASE_URL}/search`, {
     method: 'post',
     body: queryStr
   })
-  .then(response => response.json())
-
-};
+    .then(response => response.json())
+}

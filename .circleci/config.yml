@@ -1,0 +1,49 @@
+version: 2
+
+defaults: &defaults
+  docker: 
+    - image: jcuffney/node-ci-image
+  working_directory: ~/repo
+
+jobs:
+
+  dependencies:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+  build: 
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run build
+      - save_cache:
+          paths:
+            - build
+          key: v1-build-{{ checksum "package.json" }}
+          
+workflows:
+  version: 2
+  build:
+    jobs:
+      - dependencies
+      - build:
+          requires:
+            - dependencies
