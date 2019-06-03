@@ -1,0 +1,36 @@
+{
+    "Parameters": {
+		"DomainName": {
+			"Type": "String",
+			"Description": "domain name"
+		},
+		"HostedZoneId": {
+			"Type": "String",
+			"Description": "id of the hosted zone"
+		},
+		"AcmCertificateArn": {
+			"Type": "String",
+			"Description": "the Amazon Resource Name (ARN) of an AWS Certificate Manager (ACM) certificate.",
+			"AllowedPattern": "arn:aws:acm:.*"
+		}
+    },
+    "Resources": {
+        "Stack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": "https://s3.amazonaws.com/com.cuffney.cf-templates/static-spa-website/template.json",
+                "Parameters": {
+                    "DomainName": {
+                        "Ref": "DomainName"
+                    },
+                    "HostedZoneId": {
+                        "Ref": "HostedZoneId"
+                    },
+                    "AcmCertificateArn": {
+                        "Ref": "AcmCertificateArn"
+                    }
+                }
+            }
+        }
+    }
+}

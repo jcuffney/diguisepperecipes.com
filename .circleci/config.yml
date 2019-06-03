@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker: 
-    - image: jcuffney/node-ci-image
+    - image: jcuffney/node-ci-image:1.0.26
   working_directory: ~/repo
 
 jobs:
@@ -38,12 +38,82 @@ jobs:
           paths:
             - build
           key: v1-build-{{ checksum "package.json" }}
-          
+
+  validate_cloudformation: 
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run:
+          name: validate cloudformation
+          command: |
+            aws cloudformation validate-template \
+              --template-body file://infra/template.json
+
+
+  deploy_infra:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run:
+          name: deploy infrastructure
+          command: |
+            aws cloudformation deploy \
+              --stack-name diguisepperecipes-com \
+              --template-file ./infra/template.json \
+              --region us-east-1 \
+              --capabilities CAPABILITY_IAM \
+              --no-fail-on-empty-changeset \
+              --parameter-overrides \
+                DomainName=diguisepperecipes.com \
+                HostedZoneId=Z3BRW1H1BQIFDG \
+                AcmCertificateArn=arn:aws:acm:us-east-1:255964265911:certificate/78fc2d42-b996-4800-b1f9-e7a182b551e9
+
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-build-{{ checksum "package.json" }}
+
+      - run:
+          name: sync build to s3
+          command: |
+            aws s3 sync ./build s3://diguisepperecipes.com --delete
+
+      - run:
+          name: Create CloudFront Invalidation
+          command: |
+            aws cloudfront create-invalidation \
+              --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
+              --paths "/*"
+
 workflows:
   version: 2
-  build:
+  build_test_deploy:
     jobs:
       - dependencies
       - build:
           requires:
             - dependencies
+      - validate_cloudformation:
+          context: AWS
+      - deploy_infra:
+          context: AWS
+          requires: 
+            - dependencies
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy:
+          context: AWS
+          requires:
+            - deploy_infra
+          filters:
+            branches:
+              only: master
+
