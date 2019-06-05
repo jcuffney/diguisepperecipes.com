@@ -166,6 +166,7 @@ workflows:
       - deploy_infra_dev:
           context: AWS
           requires: 
+            - validate_infra
             - dependencies
             - build
           filters:
@@ -181,6 +182,7 @@ workflows:
       - deploy_infra_prod:
           context: AWS
           requires: 
+            - validate_infra
             - dependencies
             - build
           filters:
