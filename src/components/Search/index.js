@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { debounce } from 'lodash'
-import Async from 'react-select/lib/Async';
+import Async from 'react-select/async';
 
 class Search extends Component {
   static propTypes = {
