@@ -1,9 +1,83 @@
-version: 2
+version: 2.1
 
 defaults: &defaults
   docker: 
     - image: jcuffney/node-ci-image:1.0.26
   working_directory: ~/repo
+
+commands:
+  deploy_infra:
+    description: deploys infrastructure
+    parameters:
+      stack_name:
+        type: string
+      domain_name:
+        type: string
+      hosted_zone_id:
+        type: string
+        default: Z3BRW1H1BQIFDG
+      acm_certificate_arn:
+        type: string
+        default: arn:aws:acm:us-east-1:255964265911:certificate/78fc2d42-b996-4800-b1f9-e7a182b551e9
+      region:
+        type: string
+        default: us-east-1
+
+    steps:
+      - run: |
+          aws cloudformation deploy \
+          --stack-name << parameters.stack_name >> \
+          --template-file ./infra/template.json \
+          --region << parameters.region >> \
+          --capabilities CAPABILITY_IAM \
+          --no-fail-on-empty-changeset \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+            DomainName=<< parameters.domain_name >> \
+            HostedZoneId=<< parameters.hosted_zone_id >> \
+            AcmCertificateArn=<< parameters.acm_certificate_arn >> 
+
+  validate_cloudformation: 
+    description: validates infrastructures
+    parameters:
+      template_body_path:
+        type: string
+        default: ./infra/template.json
+
+    steps:
+      - checkout
+      - run:
+          name: validate cloudformation
+          command: |
+            aws cloudformation validate-template \
+              --template-body file://<< parameters.template_body_path >> 
+
+  deploy: 
+    description: deploys static files
+    parameters:
+      domain_name:
+        type: string
+      cloudfront_distribution_id:
+        type: string
+
+    steps:
+      - checkout
+      
+      - restore_cache:
+          keys:
+            - v1-build-{{ checksum "package.json" }}
+
+      - run:
+          name: sync build to s3
+          command: |
+            aws s3 sync ./build s3://<< parameters.domain_name >> --delete
+
+      - run:
+          name: Create CloudFront Invalidation
+          command: |
+            aws cloudfront create-invalidation \
+              --distribution-id << parameters.cloudfront_distribution_id >> \
+              --paths "/*"
 
 jobs:
 
@@ -39,57 +113,45 @@ jobs:
             - build
           key: v1-build-{{ checksum "package.json" }}
 
-  validate_cloudformation: 
+  validate_infra: 
     <<: *defaults
     steps:
       - checkout
-
-      - run:
-          name: validate cloudformation
-          command: |
-            aws cloudformation validate-template \
-              --template-body file://infra/template.json
+      - validate_cloudformation
 
 
-  deploy_infra:
+  deploy_infra_dev:
     <<: *defaults
     steps:
       - checkout
+      - deploy_infra:
+          stack_name: dev-diguisepperecipes-com
+          domain_name:  dev.diguisepperecipes.com
 
-      - run:
-          name: deploy infrastructure
-          command: |
-            aws cloudformation deploy \
-              --stack-name diguisepperecipes-com \
-              --template-file ./infra/template.json \
-              --region us-east-1 \
-              --capabilities CAPABILITY_IAM \
-              --no-fail-on-empty-changeset \
-              --parameter-overrides \
-                DomainName=diguisepperecipes.com \
-                HostedZoneId=Z3BRW1H1BQIFDG \
-                AcmCertificateArn=arn:aws:acm:us-east-1:255964265911:certificate/78fc2d42-b996-4800-b1f9-e7a182b551e9
-
-  deploy:
+  deploy_dev:
     <<: *defaults
     steps:
       - checkout
+      - deploy:
+          domain_name: dev.diguisepperecipes.com
+          cloudfront_distribution_id:  E1KISAUP03OVD4
 
-      - restore_cache:
-          keys:
-            - v1-build-{{ checksum "package.json" }}
+  deploy_infra_prod:
+    <<: *defaults
+    steps:
+      - checkout
+      - deploy_infra:
+          stack_name: diguisepperecipes-com
+          domain_name:  diguisepperecipes.com
 
-      - run:
-          name: sync build to s3
-          command: |
-            aws s3 sync ./build s3://diguisepperecipes.com --delete
+  deploy_prod:
+    <<: *defaults
+    steps:
+      - checkout
+      - deploy:
+          domain_name: diguisepperecipes.com
+          cloudfront_distribution_id: E20PAFBLCL2VBC
 
-      - run:
-          name: Create CloudFront Invalidation
-          command: |
-            aws cloudfront create-invalidation \
-              --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
-              --paths "/*"
 
 workflows:
   version: 2
@@ -99,9 +161,24 @@ workflows:
       - build:
           requires:
             - dependencies
-      - validate_cloudformation:
+      - validate_infra:
           context: AWS
-      - deploy_infra:
+      - deploy_infra_dev:
+          context: AWS
+          requires: 
+            - dependencies
+            - build
+          filters:
+            branches:
+              only: dev
+      - deploy_dev:
+          context: AWS
+          requires:
+            - deploy_infra_dev
+          filters:
+            branches:
+              only: dev
+      - deploy_infra_prod:
           context: AWS
           requires: 
             - dependencies
@@ -109,11 +186,10 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy:
+      - deploy_prod:
           context: AWS
           requires:
-            - deploy_infra
+            - deploy_infra_prod
           filters:
             branches:
-              only: master
-
+              only: maste
