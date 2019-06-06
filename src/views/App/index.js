@@ -17,12 +17,12 @@ export default () => (
         <div className='app-view'>
           <div className='blur' />
           <TransitionGroup className='transition-wrapper'>
-            <CSSTransition key={location.key} classNames="fade" timeout={1000}>
+            <CSSTransition key={location.key} classNames='fade' timeout={1000}>
 
               <Switch key={location.key} location={location}>
-                <Route exact path="/" component={HomeView} />
-                <Route exact path="/recipe/:id" component={RecipeView} />
-                <Route path="*" component={NotFoundView} />
+                <Route exact path='/' component={HomeView} />
+                <Route exact path='/recipe/:id' component={RecipeView} />
+                <Route path='*' component={NotFoundView} />
               </Switch>
 
             </CSSTransition>

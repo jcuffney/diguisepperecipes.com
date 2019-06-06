@@ -113,12 +113,20 @@ jobs:
             - build
           key: v1-build-{{ checksum "package.json" }}
 
+  lint: 
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run lint
+
   validate_infra: 
     <<: *defaults
     steps:
       - checkout
       - validate_cloudformation
-
 
   deploy_infra_dev:
     <<: *defaults
@@ -161,6 +169,9 @@ workflows:
       - build:
           requires:
             - dependencies
+      - lint:
+          requires:
+            - dependencies
       - validate_infra:
           context: AWS
       - deploy_infra_dev:
@@ -169,6 +180,7 @@ workflows:
             - validate_infra
             - dependencies
             - build
+            - lint
           filters:
             branches:
               only: dev
@@ -185,6 +197,7 @@ workflows:
             - validate_infra
             - dependencies
             - build
+            - lint
           filters:
             branches:
               only: master

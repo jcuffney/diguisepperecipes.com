@@ -27,9 +27,9 @@ export class RecipeView extends Component {
     const { id, recipe } = this.props
     this.props.getRecipe(id)
     if (recipe && recipe.title) {
-      const { title } = recipe;
-      document.title = `${ title } - Diguiseppe Recipes`
-    } 
+      const { title } = recipe
+      document.title = `${title} - Diguiseppe Recipes`
+    }
   }
 
   render () {
@@ -43,16 +43,16 @@ export class RecipeView extends Component {
       description,
       category,
       duration,
-      tags,
+      tags
     } = recipe
 
     const ts = tags && category ? [ ...tags, ...category ] : []
 
     return (
-      <div className="recipe-view transition-wrapper">
+      <div className='recipe-view transition-wrapper'>
         <Container>
           <Header as='h1' className='white'>
-            <Link to="/">
+            <Link to='/'>
               <Icon name='arrow left' />
             </Link>
             { title }
@@ -63,11 +63,11 @@ export class RecipeView extends Component {
               Cook Time: { duration.time } { duration.unit }
             </p>
           )}
-          <Tags tags={ ts } />
+          <Tags tags={ts} />
           <p>{ description }</p>
           <Divider />
           <Ingredients ingredients={ingredients} />
-          <Steps steps={ steps } />
+          <Steps steps={steps} />
           <p className='center'>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
         </Container>
       </div>
