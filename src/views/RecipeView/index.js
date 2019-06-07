@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Header, Container, Icon, Divider } from 'semantic-ui-react'
-import { getRecipe } from 'actions/recipe'
 import Ingredients from 'components/Ingredients'
 import Steps from 'components/Steps'
 import Tags from 'components/Tags'
 
-import './RecipeView.css'
+import styles from './index.module.sass'
 
 export class RecipeView extends Component {
   static propTypes = {
@@ -20,12 +18,10 @@ export class RecipeView extends Component {
   static defaultProps = {
     id: '',
     recipe: {},
-    getRecipe: () => {}
   }
 
   componentDidMount () {
-    const { id, recipe } = this.props
-    this.props.getRecipe(id)
+    const { recipe } = this.props
     if (recipe && recipe.title) {
       const { title } = recipe;
       document.title = `${ title } - Diguiseppe Recipes`
@@ -51,13 +47,13 @@ export class RecipeView extends Component {
     return (
       <div className="recipe-view transition-wrapper">
         <Container>
-          <Header as='h1' className='white'>
+          <Header as='h1' className={ styles.white }>
             <Link to="/">
               <Icon name='arrow left' />
             </Link>
             { title }
           </Header>
-          <Header as='h5' className='white'>By: { author }</Header>
+          <Header as='h5' className={ styles.white }>By: { author }</Header>
           {duration && (
             <p>
               Cook Time: { duration.time } { duration.unit }
@@ -68,18 +64,11 @@ export class RecipeView extends Component {
           <Divider />
           <Ingredients ingredients={ingredients} />
           <Steps steps={ steps } />
-          <p className='center'>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
+          <p className={ styles.center }>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
         </Container>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const recipes = state.recipe
-  const { match: { params: { id } } } = props
-  const recipe = Object.values(recipes).find(item => (id === item.id))
-  return { id, recipe }
-}
-
-export default connect(mapStateToProps, { getRecipe })(RecipeView)
+export default RecipeView; 
