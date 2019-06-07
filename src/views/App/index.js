@@ -7,15 +7,14 @@ import NotFoundView from 'views/NotFoundView'
 import styles from './index.module.sass'
 
 export default () => (
-<<<<<<< HEAD
   <Router>
-    <div className={ styles.appView }>
-      <div className={ styles.blur } />
-      <main className={ styles.main }>
+    <div className={styles.appView}>
+      <div className={styles.blur} />
+      <main className={styles.main}>
         <Switch>
-          <Route exact path="/" component={HomeView} />
-          <Route exact path="/recipe/:id" component={RecipeView} />
-          <Route path="*" component={NotFoundView} />
+          <Route exact path='/' component={HomeView} />
+          <Route exact path='/recipe/:id' component={RecipeView} />
+          <Route path='*' component={NotFoundView} />
         </Switch>
       </main>
     </div>

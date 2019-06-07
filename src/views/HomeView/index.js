@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-<<<<<<< HEAD
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 import Search from 'components/Search'
 
-import styles from './index.module.sass';
+import styles from './index.module.sass'
 
 export class HomeView extends Component {
   static propTypes = {
-    history: PropTypes.object,
+    history: PropTypes.object
   }
 
   static defaultProps = {}
 
   state = {
-    query: '',
+    query: ''
   }
 
   componentDidMount () {
@@ -25,11 +24,11 @@ export class HomeView extends Component {
     return (
       <div className={styles.homeView}>
         <div>
-          <h1 className={ styles.title }>DiGuiseppe Recipes</h1>
-          <Search 
-            history={ this.props.history }
-            search={  } 
-            options={ [] } 
+          <h1 className={styles.title}>DiGuiseppe Recipes</h1>
+          <Search
+            history={this.props.history}
+            search={() => {}}
+            options={[]}
           />
         </div>
         <p className={styles.credits}>Made with <span className={styles.heart}>&hearts;</span> by Joe Cuffney</p>
@@ -38,4 +37,4 @@ export class HomeView extends Component {
   }
 }
 
-export default withRouter(HomeView);
+export default withRouter(HomeView)

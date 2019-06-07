@@ -10,14 +10,12 @@ import styles from './index.module.sass'
 
 export class RecipeView extends Component {
   static propTypes = {
-    id: PropTypes.string,
-    recipe: PropTypes.object,
-    getRecipe: PropTypes.func
+    recipe: PropTypes.object
   }
 
   static defaultProps = {
     id: '',
-    recipe: {},
+    recipe: {}
   }
 
   componentDidMount () {
@@ -47,13 +45,13 @@ export class RecipeView extends Component {
     return (
       <div className='recipe-view transition-wrapper'>
         <Container>
-          <Header as='h1' className={ styles.white }>
-            <Link to="/">
+          <Header as='h1' className={styles.white}>
+            <Link to='/'>
               <Icon name='arrow left' />
             </Link>
             { title }
           </Header>
-          <Header as='h5' className={ styles.white }>By: { author }</Header>
+          <Header as='h5' className={styles.white}>By: { author }</Header>
           {duration && (
             <p>
               Cook Time: { duration.time } { duration.unit }
@@ -63,12 +61,12 @@ export class RecipeView extends Component {
           <p>{ description }</p>
           <Divider />
           <Ingredients ingredients={ingredients} />
-          <Steps steps={ steps } />
-          <p className={ styles.center }>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
+          <Steps steps={steps} />
+          <p className={styles.center}>Made with <span className='heart'>&hearts;</span> by Joe Cuffney</p>
         </Container>
       </div>
     )
   }
 }
 
-export default RecipeView; 
+export default RecipeView
