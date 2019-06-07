@@ -18,37 +18,22 @@ class Search extends Component {
     history: () => {}
   }
 
-  constructor (props) {
-    super(props)
-    this.handleLoadOptions = this.handleLoadOptions.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleFilterOption = this.handleFilterOption.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-  }
-
   state = {
     inputValue: ''
   }
 
-  handleChange (value) {
-    const { id } = value
+  handleChange = ({ id }) => {
     if (id) this.props.history.push(`/recipe/${id}`)
   }
 
-  handleFilterOption (candidate, input) {
-    console.log(candidate, input)
-    return true
-  }
-
-  handleInputChange (newValue) {
+  handleInputChange = (newValue) => {
     const inputValue = newValue.replace(/\W/g, '')
     this.setState({ inputValue })
     return inputValue
   }
 
-  async handleLoadOptions (query, cb) {
+  handleLoadOptions = async (query, cb) => {
     const results = await this.props.search(query)
-    console.log(results)
     cb(results)
   }
 
