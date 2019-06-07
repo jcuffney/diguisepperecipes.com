@@ -23,9 +23,9 @@ export class RecipeView extends Component {
   componentDidMount () {
     const { recipe } = this.props
     if (recipe && recipe.title) {
-      const { title } = recipe;
-      document.title = `${ title } - Diguiseppe Recipes`
-    } 
+      const { title } = recipe
+      document.title = `${title} - Diguiseppe Recipes`
+    }
   }
 
   render () {
@@ -39,13 +39,13 @@ export class RecipeView extends Component {
       description,
       category,
       duration,
-      tags,
+      tags
     } = recipe
 
     const ts = tags && category ? [ ...tags, ...category ] : []
 
     return (
-      <div className="recipe-view transition-wrapper">
+      <div className='recipe-view transition-wrapper'>
         <Container>
           <Header as='h1' className={ styles.white }>
             <Link to="/">
@@ -59,7 +59,7 @@ export class RecipeView extends Component {
               Cook Time: { duration.time } { duration.unit }
             </p>
           )}
-          <Tags tags={ ts } />
+          <Tags tags={ts} />
           <p>{ description }</p>
           <Divider />
           <Ingredients ingredients={ingredients} />

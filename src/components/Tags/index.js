@@ -4,18 +4,18 @@ import { Label } from 'semantic-ui-react'
 
 class Tags extends Component {
   static propTypes = {
-    tags: PropTypes.arrayOf(PropTypes.string),
+    tags: PropTypes.arrayOf(PropTypes.string)
   }
 
   static defaultProps = {
-    tags: [],
+    tags: []
   }
 
-  renderTags() {
-    const { tags } = this.props;
+  renderTags () {
+    const { tags } = this.props
     return tags.map((str, idx) => {
       return (
-        <Label as='a' color='black' tag key={` tag-${ idx }`}>
+        <Label as='a' color='black' tag key={` tag-${idx}`}>
           {str}
         </Label>
       )
@@ -23,11 +23,11 @@ class Tags extends Component {
   }
 
   render () {
-    if (!this.props.tags.length) return null;
+    if (!this.props.tags.length) return null
     return (
       <div className='tags'>
         { this.renderTags() }
-      </div>  
+      </div>
     )
   }
 }

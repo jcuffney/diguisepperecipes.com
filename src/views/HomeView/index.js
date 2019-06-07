@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+<<<<<<< HEAD
 import { withRouter } from 'react-router-dom';
 import Search from 'components/Search'
 
@@ -20,22 +21,18 @@ export class HomeView extends Component {
     document.title = 'DiGuiseppe Recipes'
   }
 
-  handleSearch = () => {
-    
-  }
-
   render () {
     return (
-      <div className={ styles.homeView }>
+      <div className={styles.homeView}>
         <div>
           <h1 className={ styles.title }>DiGuiseppe Recipes</h1>
           <Search 
             history={ this.props.history }
-            search={ null } 
+            search={  } 
             options={ [] } 
           />
         </div>
-        <p className={ styles.credits }>Made with <span className={ styles.heart }>&hearts;</span> by Joe Cuffney</p>
+        <p className={styles.credits}>Made with <span className={styles.heart}>&hearts;</span> by Joe Cuffney</p>
       </div>
     )
   }

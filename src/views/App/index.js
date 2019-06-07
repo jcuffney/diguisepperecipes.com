@@ -7,6 +7,7 @@ import NotFoundView from 'views/NotFoundView'
 import styles from './index.module.sass'
 
 export default () => (
+<<<<<<< HEAD
   <Router>
     <div className={ styles.appView }>
       <div className={ styles.blur } />
