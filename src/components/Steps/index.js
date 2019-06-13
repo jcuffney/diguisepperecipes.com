@@ -4,22 +4,22 @@ import { Header, Grid, Segment, Checkbox, Divider } from 'semantic-ui-react'
 
 class Steps extends Component {
   static propTypes = {
-    steps: PropTypes.arrayOf(PropTypes.string),
+    steps: PropTypes.arrayOf(PropTypes.string)
   }
 
   static defaultProps = {
-    steps: [],
+    steps: []
   }
 
-  renderStep() {
-    const { steps } = this.props;
+  renderStep () {
+    const { steps } = this.props
     return steps.map((str, idx) => {
-      return <Checkbox label={ str } key={ `step-${ idx }` } />
+      return <Checkbox label={str} key={`step-${idx}`} />
     })
   }
 
   render () {
-    if (!this.props.steps.length) return null;
+    if (!this.props.steps.length) return null
     return (
       <>
         <Header>Instructions:</Header>
@@ -31,7 +31,7 @@ class Steps extends Component {
             </Segment>
           </Grid.Column>
         </Grid>
-      </>  
+      </>
     )
   }
 }

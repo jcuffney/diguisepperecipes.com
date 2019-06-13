@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { debounce } from 'lodash'
-import Async from 'react-select/async';
+import Async from 'react-select/async'
 
 class Search extends Component {
   static propTypes = {
@@ -9,8 +9,8 @@ class Search extends Component {
     history: PropTypes.object,
     options: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })).isRequired,
+      id: PropTypes.string.isRequired
+    })).isRequired
   }
 
   static defaultProps = {
@@ -18,58 +18,43 @@ class Search extends Component {
     history: () => {}
   }
 
-  constructor(props){
-    super(props)
-    this.handleLoadOptions = this.handleLoadOptions.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleFilterOption = this.handleFilterOption.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
   state = {
-    inputValue: '',
+    inputValue: ''
   }
 
-  handleChange(value) {
-    const { id } = value;
-    if(id) this.props.history.push(`/recipe/${id}`)
+  handleChange = ({ id }) => {
+    if (id) this.props.history.push(`/recipe/${id}`)
   }
 
-  handleFilterOption(candidate, input) {
-    console.log(candidate, input)
-    return true;
-  }
-
-  handleInputChange(newValue) {
-    const inputValue = newValue.replace(/\W/g, '');
+  handleInputChange = (newValue) => {
+    const inputValue = newValue.replace(/\W/g, '')
     this.setState({ inputValue })
-    return inputValue;
+    return inputValue
   }
 
-  async handleLoadOptions(query, cb) {
+  handleLoadOptions = async (query, cb) => {
     const results = await this.props.search(query)
-    console.log(results);
     cb(results)
   }
 
   render () {
     return (
-      <Async 
-        autoFocus={ true }
+      <Async
+        autoFocus
         className='search'
-        placeholder={ 'Search for a recipe...' }
-        loadingMessage={ ({ inputValue }) => `Searching for ${ inputValue }` }
-        maxMenuHeight={ 300 }
-        isSearchable={ true }
-        cacheOptions={ true }
-        ignoreCase={ true }
-        ignoreAccents={ true }
-        onChange={ this.handleChange }
-        onInputChange={ this.handleInputChange }
-        loadOptions={ debounce(this.handleLoadOptions, 750) } 
-        getOptionLabel={ option => option.title }
-        getOptionValue={ option => option.title.toLowerCase() }
-        defaultOptions={ this.props.options }
+        placeholder={'Search for a recipe...'}
+        loadingMessage={({ inputValue }) => `Searching for ${inputValue}`}
+        maxMenuHeight={300}
+        isSearchable
+        cacheOptions
+        ignoreCase
+        ignoreAccents
+        onChange={this.handleChange}
+        onInputChange={this.handleInputChange}
+        loadOptions={debounce(this.handleLoadOptions, 750)}
+        getOptionLabel={option => option.title}
+        getOptionValue={option => option.title.toLowerCase()}
+        defaultOptions={this.props.options}
       />
     )
   }
